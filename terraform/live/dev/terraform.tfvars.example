@@ -1,0 +1,8 @@
+project              = "unleash-home-exercise"
+env                  = "dev"
+region               = "us-east-1"
+cluster_version      = "1.29"
+app_bucket_name      = "tamir-unleash-bucket"
+app_namespace        = "unleash"
+app_service_account  = "unleash-home-exercise"
+bucket_force_destroy = false
