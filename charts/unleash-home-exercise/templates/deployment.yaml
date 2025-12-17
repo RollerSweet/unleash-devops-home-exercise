@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "unleash-home-exercise.fullname" . }}
+  labels:
+    {{- include "unleash-home-exercise.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "unleash-home-exercise.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "unleash-home-exercise.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "unleash-home-exercise.serviceAccountName" . }}
+      {{- $containerPort := default 3000 .Values.env.port }}
+      {{- $bucketName := required "Values.env.bucketName must be set to the S3 bucket name." .Values.env.bucketName }}
+      {{- $defaultResources := dict "requests" (dict "cpu" "50m" "memory" "32Mi") "limits" (dict "cpu" "100m" "memory" "256Mi") }}
+      {{- $resources := default $defaultResources .Values.resources }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "Always" }}
+          env:
+            - name: BUCKET_NAME
+              value: {{ $bucketName | quote }}
+            - name: PORT
+              value: {{ $containerPort | quote }}
+          ports:
+            - name: http
+              containerPort: {{ $containerPort }}
+          resources:
+            {{- toYaml $resources | nindent 12 }}
