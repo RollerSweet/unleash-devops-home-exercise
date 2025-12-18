@@ -10,6 +10,23 @@ image:
 containerPort: 3000
 # bucketName: unleash-tm-app-s3-bucket
 
+livenessProbe:
+  enabled: true
+  tcpSocket:
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 2
+
+readinessProbe:
+  enabled: true
+  tcpSocket:
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 2
+
 service:
   type: ClusterIP
   port: 80

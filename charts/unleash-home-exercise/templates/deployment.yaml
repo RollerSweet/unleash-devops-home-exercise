@@ -34,5 +34,17 @@ spec:
           ports:
             - name: http
               containerPort: {{ $containerPort }}
+{{- with .Values.livenessProbe }}
+{{- if .enabled }}
+          livenessProbe:
+            {{- toYaml (omit . "enabled") | nindent 12 }}
+{{- end }}
+{{- end }}
+{{- with .Values.readinessProbe }}
+{{- if .enabled }}
+          readinessProbe:
+            {{- toYaml (omit . "enabled") | nindent 12 }}
+{{- end }}
+{{- end }}
           resources:
             {{- toYaml $resources | nindent 12 }}

@@ -1,4 +1,4 @@
-output "bucket_arn" {
+output "role_arn" {
     description = "arn for sa"
     value = aws_iam_role.app_iam_role.arn
 }

@@ -68,7 +68,7 @@ jobs:
         run: |
           tf_outputs=$(terraform -chdir=./terraform/live/app_deps output -json)
           bucketName=$(jq -r '.bucket_name.value' <<< "$tf_outputs")
-          roleArn=$(jq -r '.bucket_arn.value' <<< "$tf_outputs")
+          roleArn=$(jq -r '.role_arn.value' <<< "$tf_outputs")
 
           test -n "$bucketName" && test "$bucketName" != "null"
           test -n "$roleArn" && test "$roleArn" != "null"
