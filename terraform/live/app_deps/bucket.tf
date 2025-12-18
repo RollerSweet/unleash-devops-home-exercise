@@ -13,8 +13,8 @@ resource "aws_iam_policy" "app_s3_policy" {
         Effect   = "Allow"
         Action   = ["s3:GetObject", "s3:PutObject", "s3:ListBucket"]
         Resource = [
-          "arn:aws:s3:::${var.env}-app-s3-bucket",
-          "arn:aws:s3:::${var.env}-app-s3-bucket/*"
+          aws_s3_bucket.app_bucket.arn,
+          "${aws_s3_bucket.app_bucket.arn}/*"
         ]
       }
     ]
@@ -36,7 +36,7 @@ resource "aws_iam_role" "app_iam_role" {
         Condition = {
           StringEquals = {
             "${data.terraform_remote_state.eks.outputs.oidc_provider}:sub" = "system:serviceaccount:unleash:unleash-home-exercise"
-            "${data.terraform_remote_state.eks.outputs.oidc_provider}:aud": "sts.amazonaws.com"
+            "${data.terraform_remote_state.eks.outputs.oidc_provider}:aud" = "sts.amazonaws.com"
           }
         }
       }
