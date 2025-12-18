@@ -1,22 +1,30 @@
 replicaCount: 1
 
 image:
-  # repository: ghcr.io/RollerSweet/unleash-devops-home-exercise
   repository: rollersweet/unleash-devops-home-exercise
   tag: "latest"
   pullPolicy: Always
 
-env:
-  bucketName: "unleash-home-exercise-bucket-dev"
-  port: 3000
+containerPort: 3000
+bucketName: "unleash-tm-app-s3-bucket"
 
 service:
   type: ClusterIP
   port: 80
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hosts:
+    - host: unleash.tamirmadar.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
 
 serviceAccount:
   create: true
   automount: true
   name: unleash-home-exercise
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::532150070616:role/unleash-home-exercise-app-irsa-dev
+    eks.amazonaws.com/role-arn: arn:aws:iam::532150070616:role/app-s3-role

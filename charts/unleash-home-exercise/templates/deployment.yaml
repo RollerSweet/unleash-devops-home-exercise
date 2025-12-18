@@ -15,16 +15,19 @@ spec:
         {{- include "unleash-home-exercise.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "unleash-home-exercise.serviceAccountName" . }}
-      {{- $containerPort := default 3000 .Values.env.port }}
-      {{- $bucketName := required "Values.env.bucketName must be set to the S3 bucket name." .Values.env.bucketName }}
+      {{- $containerPort := default 3000 .Values.containerPort }}
+      {{- $bucketName := required "Values.bucketName must be set to the S3 bucket name." .Values.bucketName }}
       {{- $defaultResources := dict "requests" (dict "cpu" "50m" "memory" "32Mi") "limits" (dict "cpu" "100m" "memory" "256Mi") }}
       {{- $resources := default $defaultResources .Values.resources }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "Always" }}
-          env:
-            - name: BUCKET_NAME
+          env: 
+            {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            - name: BUCKET
               value: {{ $bucketName | quote }}
             - name: PORT
               value: {{ $containerPort | quote }}
