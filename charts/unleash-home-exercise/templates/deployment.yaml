@@ -27,7 +27,7 @@ spec:
             {{- with .Values.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-            - name: BUCKET
+            - name: BUCKET_NAME
               value: {{ $bucketName | quote }}
             - name: PORT
               value: {{ $containerPort | quote }}
