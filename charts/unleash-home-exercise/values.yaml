@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: rollersweet/unleash-devops-home-exercise
+  repository: rollersweet/unleash-home-exercise
   tag: "latest"
   pullPolicy: Always
 
