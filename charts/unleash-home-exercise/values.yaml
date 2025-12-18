@@ -8,7 +8,7 @@ image:
   pullPolicy: Always
 
 containerPort: 3000
-bucketName: unleash-tm-app-s3-bucket
+# bucketName: unleash-tm-app-s3-bucket
 
 service:
   type: ClusterIP
@@ -33,5 +33,5 @@ serviceAccount:
   create: true
   automount: true
   name: unleash-home-exercise
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::532150070616:role/app-s3-role
+  # annotations:
+  #   eks.amazonaws.com/role-arn: arn:aws:iam::12345678910:role/app-s3-role
